@@ -1,25 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Document</title>
+    <title th:text="#{title}">Listado de productos</title> <!-- Usando i18n para el título -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<h1 th:text="${title}"></h1>
+<h1 th:text="#{title}">Listado de productos</h1> <!-- Usando i18n para el encabezado -->
+
+<!-- Filtros -->
+<input type="text" id="codeFilter" th:placeholder="#{filter_code}" placeholder="Filtrar por código">
+<input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
+<input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
+
 <table>
+    <thead>
     <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Category</th>
+        <th th:text="#{code}">Código</th> <!-- Usando i18n para la columna Código -->
+        <th th:text="#{price}">Precio</th> <!-- Usando i18n para la columna Precio -->
+        <th th:text="#{stock}">Stock</th> <!-- Usando i18n para la columna Stock -->
     </tr>
+    </thead>
+    <tbody id="productTable">
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
-        <td th:text="${product.name}"></td>
+        <td th:text="${product.code}"></td>
         <td th:text="${product.price}"></td>
-        <td th:text="${product.category.name}"></td>
+        <td th:text="${product.stock}"></td>
     </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        // Filtros por código, precio y stock
+        $("#codeFilter, #priceFilter, #stockFilter").on("input", function() {
+            var codeFilter = $("#codeFilter").val().toLowerCase();
+            var priceFilter = parseFloat($("#priceFilter").val()) || 0;
+            var stockFilter = parseInt($("#stockFilter").val()) || 0;
+
+            $("#productTable tr").filter(function() {
+                var code = $(this).find("td:nth-child(2)").text().toLowerCase();
+                var price = parseFloat($(this).find("td:nth-child(3)").text());
+                var stock = parseInt($(this).find("td:nth-child(4)").text());
+
+                $(this).toggle(
+                    code.includes(codeFilter) &&
+                    (price >= priceFilter) &&
+                    (stock >= stockFilter)
+                );
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
