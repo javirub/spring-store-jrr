@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     // Obtener todos los productos [READ]
-    @GetMapping()
+    @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }

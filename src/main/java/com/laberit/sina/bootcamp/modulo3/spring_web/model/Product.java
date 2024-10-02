@@ -15,6 +15,22 @@ public class Product {
         this.productDetail = productDetail;
     }
 
+    public Product(String code, Double price, Long stock, ProductDetail[] productDetail) {
+        this.id = null;
+        this.code = code;
+        this.price = price;
+        this.stock = stock;
+        this.productDetail = productDetail;
+    }
+
+    public Product(String code, Double price, Long stock) {
+        this.id = null;
+        this.code = code;
+        this.price = price;
+        this.stock = stock;
+        this.productDetail = null;
+    }
+
     public Product() {
     }
 

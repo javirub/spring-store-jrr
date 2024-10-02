@@ -5,18 +5,47 @@
     <title th:text="#{title}">Listado de productos</title> <!-- Usando i18n para el título -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Estilo para la tabla y filtros */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px; /* Espacio entre el encabezado y la tabla */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between; /* Espacio entre los filtros */
+            margin-bottom: 10px; /* Margen inferior para separar de la tabla */
+        }
+
+        .filter-container input {
+            width: 30%; /* Ancho de los filtros */
+            padding: 8px; /* Espaciado interno */
+            box-sizing: border-box; /* Para incluir padding en el ancho total */
+        }
+    </style>
 </head>
 <body>
 <h1 th:text="#{title}">Listado de productos</h1> <!-- Usando i18n para el encabezado -->
 
-<!-- Filtros -->
-<input type="text" id="codeFilter" th:placeholder="#{filter_code}" placeholder="Filtrar por código">
-<input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
-<input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
+<!-- Contenedor de Filtros -->
+<div class="filter-container">
+    <input type="text" id="codeFilter" th:placeholder="#{filter_code}" placeholder="Filtrar por código">
+    <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
+    <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
+</div>
 
 <table>
     <thead>
     <tr>
+        <th>ID</th>
         <th th:text="#{code}">Código</th> <!-- Usando i18n para la columna Código -->
         <th th:text="#{price}">Precio</th> <!-- Usando i18n para la columna Precio -->
         <th th:text="#{stock}">Stock</th> <!-- Usando i18n para la columna Stock -->
