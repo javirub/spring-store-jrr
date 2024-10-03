@@ -11,7 +11,7 @@
     <groupId>com.laberit.sina.bootcamp.modulo3</groupId>
     <artifactId>spring-web</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>spring-store</name>
+    <name>spring-web</name>
     <description>Store for laberit bootcamp</description>
     <url/>
     <licenses>

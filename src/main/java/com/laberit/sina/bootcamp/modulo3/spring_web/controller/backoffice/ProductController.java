@@ -1,10 +1,8 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.controller.backoffice;
 
-import com.laberit.sina.bootcamp.modulo3.spring_web.dto.ProductCreateDTO;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductServiceImpl;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +18,9 @@ public class ProductController {
     @Autowired
     private ProductServiceImpl productServiceImpl;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-
-    // Crear un producto [CREATE]
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@Valid @RequestBody ProductCreateDTO productCreateDTO) {
-        Product product = modelMapper.map(productCreateDTO, Product.class);
+    public Product createProduct(@Valid @RequestBody Product product) {
         productServiceImpl.addProduct(product);
         return product;
     }
@@ -43,9 +35,7 @@ public class ProductController {
     // Actualizar un producto [UPDATE]
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (productServiceImpl.getProductById(id) == null) {
-            return new ResponseEntity<>("Producto con id: " + id + " no encontrado", HttpStatus.NOT_FOUND);
-        } else if (product.getId() != null && !product.getId().equals(id)) {
+        if (product.getId() != null && !product.getId().equals(id)) {
             return new ResponseEntity<>("No se puede cambiar el id del producto", HttpStatus.BAD_REQUEST);
         } else {
             productServiceImpl.updateProduct(id, product);

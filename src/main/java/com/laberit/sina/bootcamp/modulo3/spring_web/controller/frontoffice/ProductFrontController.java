@@ -16,7 +16,6 @@ public class ProductFrontController {
     @Autowired
     private ProductServiceImpl productServiceImpl;
 
-
     @GetMapping
     public String showProducts(Model model) {
         // Aquí deberías obtener los productos de tu API o base de datos
@@ -24,6 +23,5 @@ public class ProductFrontController {
         // Añadir los productos al modelo
         model.addAttribute("products", products);
         return "products"; // Nombre de la vista Thymeleaf
-
     }
 }

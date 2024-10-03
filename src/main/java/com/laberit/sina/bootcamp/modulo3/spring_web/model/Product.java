@@ -30,7 +30,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ProductDetail> productDetail;
+    private List<ProductDetail> productDetail = new ArrayList<>();
 
 
     public Product(String code, Double price, Long stock, List<ProductDetail> productDetail) {
@@ -44,13 +44,15 @@ public class Product {
         this.code = code;
         this.price = price;
         this.stock = stock;
-        this.productDetail = new ArrayList<>();
+    }
+
+    public Product(Product product){
+        this.code = product.getCode();
+        this.price = product.getPrice();
+        this.stock = product.getStock();
+        this.productDetail = product.getProductDetail();
     }
 
     public Product() {
-    }
-
-    public void addProductDetail(ProductDetail productDetail) {
-        this.productDetail.add(productDetail);
     }
 }
