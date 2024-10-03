@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/backoffice/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
