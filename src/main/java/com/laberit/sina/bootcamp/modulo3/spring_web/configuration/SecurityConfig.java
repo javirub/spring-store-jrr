@@ -22,7 +22,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/products/**").permitAll()
                                 .requestMatchers("/backoffice/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )

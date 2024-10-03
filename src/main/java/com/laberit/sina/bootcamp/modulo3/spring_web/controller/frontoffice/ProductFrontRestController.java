@@ -1,5 +1,6 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.controller.frontoffice;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.dto.ProductDTO;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,12 +18,14 @@ public class ProductFrontRestController {
     // Obtener un producto por id [READ]
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+    public ResponseEntity<?> getProductById(@PathVariable Long id, @RequestParam(value = "lang", defaultValue = "es") String lang) {
         try {
             Product product = productServiceImpl.getProductById(id);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            ProductDTO productDTO = new ProductDTO(product, lang); //
+            return new ResponseEntity<>(productDTO, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("No se ha encontrado el producto con id: "+ id,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No se ha encontrado el producto con id: " + id, HttpStatus.NOT_FOUND);
         }
     }
 }
+
