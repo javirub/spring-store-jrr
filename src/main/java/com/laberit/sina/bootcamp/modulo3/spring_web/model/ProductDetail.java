@@ -1,47 +1,33 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "product_detail")
 public class ProductDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
     private String lang;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne(fetch= FetchType.LAZY, optional = false)
+    @JoinColumn(name="product_id")
+    @JsonBackReference
+    private Product product;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public ProductDetail(){}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public ProductDetail(Long id, String name, String description, String lang) {
-        this.id = id;
+    public ProductDetail(String name, String description, String lang, Product product) {
         this.name = name;
         this.description = description;
         this.lang = lang;
+        this.product = product;
     }
 }
