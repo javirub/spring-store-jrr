@@ -1,22 +1,39 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "product")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
+
+    @NotNull
+    @PositiveOrZero
     private Double price;
+
+    @NotNull
+    @PositiveOrZero
     private Long stock;
-    private ProductDetail[] productDetail;
 
-    public Product(Long id, String code, Double price, Long stock, ProductDetail[] productDetail) {
-        this.id = id;
-        this.code = code;
-        this.price = price;
-        this.stock = stock;
-        this.productDetail = productDetail;
-    }
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ProductDetail> productDetail;
 
-    public Product(String code, Double price, Long stock, ProductDetail[] productDetail) {
-        this.id = null;
+
+    public Product(String code, Double price, Long stock, List<ProductDetail> productDetail) {
         this.code = code;
         this.price = price;
         this.stock = stock;
@@ -24,53 +41,16 @@ public class Product {
     }
 
     public Product(String code, Double price, Long stock) {
-        this.id = null;
         this.code = code;
         this.price = price;
         this.stock = stock;
-        this.productDetail = null;
+        this.productDetail = new ArrayList<>();
     }
 
     public Product() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Long getStock() {
-        return stock;
-    }
-
-    public void setStock(Long stock) {
-        this.stock = stock;
-    }
-
-    public ProductDetail[] getProductDetail() {
-        return productDetail;
-    }
-
-    public void setProductDetail(ProductDetail[] productDetail) {
-        this.productDetail = productDetail;
+    public void addProductDetail(ProductDetail productDetail) {
+        this.productDetail.add(productDetail);
     }
 }

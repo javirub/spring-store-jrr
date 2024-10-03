@@ -8,8 +8,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 
 
-
-
 @Getter
 public class ProductCreateDTO {
     @NotEmpty(message = "El código no puede estar vacío")

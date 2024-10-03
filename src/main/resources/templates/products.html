@@ -37,6 +37,7 @@
 
 <!-- Contenedor de Filtros -->
 <div class="filter-container">
+    <input type="text" id="idFilter" placeholder="Filtrar por ID">
     <input type="text" id="codeFilter" th:placeholder="#{filter_code}" placeholder="Filtrar por código">
     <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
     <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
@@ -53,7 +54,7 @@
     </thead>
     <tbody id="productTable">
     <tr th:each="product : ${products}">
-        <td th:text="${product.id}"></td>
+        <td><a th:href="@{'/products/' + ${product.id}}" th:text="${product.id}"></a></td>
         <td th:text="${product.code}"></td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.stock}"></td>
@@ -80,6 +81,16 @@
                     (stock >= stockFilter)
                 );
             });
+        });
+
+        // Redirigir al enlace /products/{id} al presionar Enter en el filtro por ID
+        $("#idFilter").on("keypress", function(event) {
+            if (event.which === 13) { // Enter key pressed
+                var id = $(this).val();
+                if (id) {
+                    window.location.href = '/products/' + id;
+                }
+            }
         });
     });
 </script>
