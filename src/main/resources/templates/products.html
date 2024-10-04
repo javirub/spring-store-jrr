@@ -38,7 +38,9 @@
 <!-- Contenedor de Filtros -->
 <div class="filter-container">
     <input type="text" id="idFilter" placeholder="Filtrar por ID">
-    <input type="text" id="codeFilter" th:placeholder="#{filter_code}" placeholder="Filtrar por código">
+    <select id="categoryFilter">
+        <option value="" th:text="#{filter_category}">Filtrar por categoría</option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
     <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
 </div>
@@ -47,17 +49,21 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th th:text="#{code}">Código</th> <!-- Usando i18n para la columna Código -->
-        <th th:text="#{price}">Precio</th> <!-- Usando i18n para la columna Precio -->
-        <th th:text="#{stock}">Stock</th> <!-- Usando i18n para la columna Stock -->
+        <th th:text="#{code}">Código</th>
+        <th th:text="#{category}">Categoría</th>
+        <th th:text="#{price}">Precio</th>
+        <th th:text="#{name}">Nombre</th>
+        <th th:text="#{description}">Descripción</th>
     </tr>
     </thead>
     <tbody id="productTable">
     <tr th:each="product : ${products}">
         <td><a th:href="@{'/products/' + ${product.id}}" th:text="${product.id}"></a></td>
         <td th:text="${product.code}"></td>
-        <td th:text="${product.price}"></td>
-        <td th:text="${product.stock}"></td>
+        <td><a th:href="@{'/products?category=' +${product.category}}" th:text="${product.category}"></a></td>
+        <td th:text="${product.price} + ' €'"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.description}"></td>
     </tr>
     </tbody>
 </table>
@@ -65,18 +71,15 @@
 <script>
     $(document).ready(function(){
         // Filtros por código, precio y stock
-        $("#codeFilter, #priceFilter, #stockFilter").on("input", function() {
-            var codeFilter = $("#codeFilter").val().toLowerCase();
+        $("#priceFilter, #stockFilter").on("input", function() {
             var priceFilter = parseFloat($("#priceFilter").val()) || 0;
             var stockFilter = parseInt($("#stockFilter").val()) || 0;
 
             $("#productTable tr").filter(function() {
-                var code = $(this).find("td:nth-child(2)").text().toLowerCase();
                 var price = parseFloat($(this).find("td:nth-child(3)").text());
                 var stock = parseInt($(this).find("td:nth-child(4)").text());
 
                 $(this).toggle(
-                    code.includes(codeFilter) &&
                     (price >= priceFilter) &&
                     (stock >= stockFilter)
                 );
@@ -90,6 +93,13 @@
                 if (id) {
                     window.location.href = '/products/' + id;
                 }
+            }
+        });
+
+        $("#categoryFilter").on("change", function() {
+            var category = $(this).val();
+            if (category) {
+                window.location.href = '/products?category=' + category;
             }
         });
     });
