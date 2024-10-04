@@ -27,6 +27,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProductsWithDetail() {
+        return productRepository.findAllWithDetail();
+    }
+
+    @Override
+    public List<Product> getByCategoryWithDetail(Category category) {
+        return productRepository.findByCategoryWithDetail(category);
+    }
+
+    @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }

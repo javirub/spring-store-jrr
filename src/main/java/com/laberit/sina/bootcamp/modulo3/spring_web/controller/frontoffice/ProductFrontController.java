@@ -24,23 +24,8 @@ public class ProductFrontController {
 
     @GetMapping
     public String showProducts(Model model, @RequestParam(value = "lang", defaultValue = "es") String lang, @RequestParam(value="category", required = false) String category) {
-        List<Product> products;
-        try {
-            if (category != null && EnumUtils.isValidCategory(category)) {
-                Category categoryEnum = Category.valueOf(category.toUpperCase());
-                products = productServiceImpl.getByCategory(categoryEnum);
-            } else {
-                products = productServiceImpl.getAllProducts();
-            }
-        } catch (IllegalArgumentException e) {
-            products = productServiceImpl.getAllProducts();
-        }
-
-        List<ProductDTO> productDTOs = products.stream()
-                .map(product -> new ProductDTO(product, lang))
-                .toList();
         // Añadir los productos al modelo
-        model.addAttribute("products", productDTOs);
+        model.addAttribute("products", getProductDTO(category, lang));
         // Añadir categorías de productos
         model.addAttribute("categories", Arrays.asList(Category.values()));
         return "products"; // Nombre de la vista Thymeleaf
@@ -48,11 +33,21 @@ public class ProductFrontController {
 
     @GetMapping(produces = "application/json")
     @ResponseBody
-    public List<ProductDTO> showProductsJson(@RequestParam(value = "lang", defaultValue = "es") String lang) {
-        List<Product> products = productServiceImpl.getAllProducts();
-        List<ProductDTO> productDTOs = products.stream()
+    public List<ProductDTO> showProductsJson(@RequestParam(value = "lang", defaultValue = "es") String lang, @RequestParam(value="category", required = false) String category) {
+        return getProductDTO(category, lang);
+    }
+
+    private List<ProductDTO> getProductDTO(String category, String lang) {
+        List<Product> products;
+        if (category != null && EnumUtils.isValidCategory(category)) {
+            Category categoryEnum = Category.valueOf(category.toUpperCase());
+            products = productServiceImpl.getByCategoryWithDetail(categoryEnum);
+        } else {
+            products = productServiceImpl.getAllProductsWithDetail();
+        }
+
+        return products.stream()
                 .map(product -> new ProductDTO(product, lang))
                 .toList();
-        return productDTOs;
     }
 }
