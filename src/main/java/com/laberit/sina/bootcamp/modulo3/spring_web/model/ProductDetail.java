@@ -17,12 +17,13 @@ public class ProductDetail {
     private String description;
     private String lang;
 
-    @ManyToOne(fetch= FetchType.LAZY, optional = false)
-    @JoinColumn(name="product_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
 
-    public ProductDetail(){}
+    public ProductDetail() {
+    }
 
     public ProductDetail(String name, String description, String lang, Product product) {
         this.name = name;

@@ -20,13 +20,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(new Locale("es")); // Establece el idioma por defecto (español en este caso)
+        slr.setDefaultLocale(Locale.forLanguageTag("es")); // Establece el idioma por defecto (español en este caso)
         return slr;
     }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setIgnoreInvalidLocale(true);
         lci.setParamName("lang"); // Parámetro que cambia el idioma en la URL, por ejemplo: ?lang=en
         return lci;
     }

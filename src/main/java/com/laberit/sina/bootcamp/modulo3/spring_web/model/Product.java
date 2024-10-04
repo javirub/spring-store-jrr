@@ -1,6 +1,7 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -28,29 +29,35 @@ public class Product {
     @PositiveOrZero
     private Long stock;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ProductDetail> productDetail = new ArrayList<>();
 
 
-    public Product(String code, Double price, Long stock, List<ProductDetail> productDetail) {
+    public Product(String code, Double price, Long stock, Category category, List<ProductDetail> productDetail) {
         this.code = code;
         this.price = price;
         this.stock = stock;
+        this.category = category;
         this.productDetail = productDetail;
     }
 
-    public Product(String code, Double price, Long stock) {
+    public Product(String code, Double price, Long stock, Category category) {
         this.code = code;
         this.price = price;
         this.stock = stock;
+        this.category = category;
     }
 
-    public Product(Product product){
+    public Product(Product product) {
         this.code = product.getCode();
         this.price = product.getPrice();
         this.stock = product.getStock();
         this.productDetail = product.getProductDetail();
+        this.category = product.getCategory();
     }
 
     public Product() {
