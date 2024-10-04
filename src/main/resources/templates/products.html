@@ -39,7 +39,7 @@
 <div class="filter-container">
     <input type="text" id="idFilter" placeholder="Filtrar por ID">
     <select id="categoryFilter">
-        <option value="">Filtrar por categoría</option>
+        <option value="" th:text="#{filter_category}">Filtrar por categoría</option>
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
     <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
