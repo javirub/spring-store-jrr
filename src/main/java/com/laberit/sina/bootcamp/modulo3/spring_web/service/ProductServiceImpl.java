@@ -1,5 +1,6 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.service;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.ProductDetail;
 import com.laberit.sina.bootcamp.modulo3.spring_web.repository.ProductRepository;
@@ -28,6 +29,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public List<Product> getByCategory(Category category) {
+        return productRepository.findByCategory(category);
     }
 
     @Override

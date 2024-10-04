@@ -1,5 +1,6 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.dto;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ public class ProductDTO {
     private final Long id;
     private final String code;
     private final Double price;
+    private final Category category;
     private String name;
     private String description;
 
@@ -15,6 +17,7 @@ public class ProductDTO {
         this.id = product.getId();
         this.code = product.getCode();
         this.price = product.getPrice();
+        this.category = product.getCategory();
         switch(lang){
             case "es":
                 product.getProductDetail().stream().filter(pd -> pd.getLang().equals("es")).findFirst().ifPresent(pd -> {
