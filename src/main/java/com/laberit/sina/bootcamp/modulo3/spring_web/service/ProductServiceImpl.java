@@ -32,7 +32,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getByCategoryWithDetail(Category category) {
+    public List<Product> getAllProductsByCategoryWithDetailFilterByName(Category category, String name, String lang) {
+        name = "%" + name + "%";
+        return productRepository.findByCategoryWithDetailFilterByName(category, name, lang);
+    }
+
+    @Override
+    public List<Product> getAllProductsWithDetailFilterByName(String name, String lang) {
+        name = "%" + name + "%";
+        return productRepository.findAllWithDetailFilterByName(name, lang);
+    }
+
+    @Override
+    public List<Product> getAllProductsByCategoryWithDetail(Category category) {
         return productRepository.findByCategoryWithDetail(category);
     }
 

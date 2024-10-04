@@ -1,7 +1,7 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.controller.backoffice;
 
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
-import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductServiceImpl;
+import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,21 +16,20 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductServiceImpl productServiceImpl;
+    private ProductService productService;
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProduct(@Valid @RequestBody Product product) {
-        productServiceImpl.addProduct(product);
+        productService.addProduct(product);
         return product;
     }
 
     // Obtener todos los productos [READ]
     @GetMapping
     public List<Product> getAllProducts() {
-        return productServiceImpl.getAllProducts();
+        return productService.getAllProducts();
     }
-
 
     // Actualizar un producto [UPDATE]
     @PutMapping("/{id}")
@@ -38,7 +37,7 @@ public class ProductController {
         if (product.getId() != null && !product.getId().equals(id)) {
             return new ResponseEntity<>("No se puede cambiar el id del producto", HttpStatus.BAD_REQUEST);
         } else {
-            productServiceImpl.updateProduct(id, product);
+            productService.updateProduct(id, product);
             return new ResponseEntity<>("Producto con id: " + id + " actualizado", HttpStatus.OK);
         }
     }
@@ -48,10 +47,10 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long id, @RequestParam(defaultValue = "false") boolean confirmed) {
         if (!confirmed) {
             return new ResponseEntity<>("No se ha confirmado la eliminación", HttpStatus.BAD_REQUEST);
-        } else if (productServiceImpl.getProductById(id) == null) {
+        } else if (productService.getProductById(id) == null) {
             return new ResponseEntity<>("Producto " + id + " no encontrado", HttpStatus.NOT_FOUND);
         } else {
-            productServiceImpl.deleteProduct(id);
+            productService.deleteProduct(id);
             return new ResponseEntity<>("Producto " + id + " eliminado", HttpStatus.OK);
         }
     }

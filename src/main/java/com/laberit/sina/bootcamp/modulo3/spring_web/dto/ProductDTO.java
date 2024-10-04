@@ -18,18 +18,24 @@ public class ProductDTO {
         this.code = product.getCode();
         this.price = product.getPrice();
         this.category = product.getCategory();
-        switch(lang){
+        switch (lang) {
             case "es":
-                product.getProductDetail().stream().filter(pd -> pd.getLang().equals("es")).findFirst().ifPresent(pd -> {
-                    this.name = pd.getName();
-                    this.description = pd.getDescription();
-                });
+                product.getProductDetail().stream()
+                        .filter(pd -> pd.getLang().equals("es"))
+                        .findFirst()
+                        .ifPresent(pd -> {
+                            this.name = pd.getName();
+                            this.description = pd.getDescription();
+                        });
                 break;
             case "en":
-                product.getProductDetail().stream().filter(pd -> pd.getLang().equals("en")).findFirst().ifPresent(pd -> {
-                    this.name = pd.getName();
-                    this.description = pd.getDescription();
-                });
+                product.getProductDetail().stream()
+                        .filter(pd -> pd.getLang().equals("en"))
+                        .findFirst()
+                        .ifPresent(pd -> {
+                            this.name = pd.getName();
+                            this.description = pd.getDescription();
+                        });
                 break;
             default: // default to spanish
                 product.getProductDetail().stream().filter(pd -> pd.getLang().equals("es")).findFirst().ifPresent(pd -> {

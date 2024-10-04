@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setIgnoreInvalidLocale(true);
         lci.setParamName("lang"); // Parámetro que cambia el idioma en la URL, por ejemplo: ?lang=en
         return lci;
     }

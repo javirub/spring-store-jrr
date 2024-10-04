@@ -13,5 +13,7 @@ public interface ProductService {
     void updateProduct(Long id, Product product);
     void deleteProduct(Long id);
     List<Product> getAllProductsWithDetail();
-    List<Product> getByCategoryWithDetail(Category category);
+    List<Product> getAllProductsByCategoryWithDetail(Category category);
+    List<Product> getAllProductsWithDetailFilterByName(String name, String lang);
+    List<Product> getAllProductsByCategoryWithDetailFilterByName(Category category, String name, String lang);
 }
