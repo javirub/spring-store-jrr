@@ -62,15 +62,21 @@
         .btn:hover {
             background: #2575fc;
         }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h2 th:text="#{login}">Iniciar sesión</h2>
-    <form>
+    <form th:action="@{/login}" method="post" th:object="${error}">
         <div class="form-group">
             <label for="email" th:text="#{email}">Email</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="username" required>
         </div>
         <div class="form-group">
             <label for="password" th:text="#{password}">Contraseña</label>
@@ -78,6 +84,7 @@
         </div>
         <button type="submit" class="btn" th:text="#{login}">Iniciar sesión</button>
     </form>
+    <div th:if="${param.error}" class="error" th:text="#{login.error}">Email o contraseña incorrectos</div>
 </div>
 </body>
 </html>

@@ -26,14 +26,14 @@ public class UserServiceImpl implements UserService {
         User newUser = new User();
         newUser.setName(name);
         newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setPassword(encodePassword(password));
         newUser.setRole(Role.CLIENT);
         userRepository.save(newUser);
         return true;
     }
 
     @Override
-    public void loginUser(String email, String password) {
-        userRepository.findByEmailAndPasswordOrThrow(email, password);
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

@@ -41,6 +41,12 @@ public class SecurityConfig {
                         .csrfTokenRepository(csrfTokenRepository())
                 )
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/products", true)
+                        .failureUrl("/login?error")
+                        .permitAll()
+                )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

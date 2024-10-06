@@ -32,10 +32,4 @@ public class UserFrontController {
     public String login() {
         return "login";
     }
-
-    @PostMapping("/login")
-    public String loginPost(String email, String password) {
-        userService.loginUser(email, password);
-        return "redirect:/products";
-    }
 }
