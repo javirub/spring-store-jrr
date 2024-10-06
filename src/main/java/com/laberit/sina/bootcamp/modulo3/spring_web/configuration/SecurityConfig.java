@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/backoffice/**").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                                .requestMatchers("/login", "/register").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository())
