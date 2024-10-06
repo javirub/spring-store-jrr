@@ -7,6 +7,7 @@ import com.laberit.sina.bootcamp.modulo3.spring_web.model.ProductDetail;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.User;
 import com.laberit.sina.bootcamp.modulo3.spring_web.repository.ProductRepository;
 import com.laberit.sina.bootcamp.modulo3.spring_web.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class DataInitializer implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) {
         initializeProducts();
         initializeUsers();

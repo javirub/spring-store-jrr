@@ -21,10 +21,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private EntityManager entityManager;
 
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
 
     @Override
     public List<Product> getAllProductsWithDetail() {
@@ -52,11 +48,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getByCategory(Category category) {
-        return productRepository.findByCategory(category);
-    }
-
-    @Override
     @Transactional
     public void addProduct(Product product) {
         // Ensure each ProductDetail is associated with the Product
@@ -65,7 +56,6 @@ public class ProductServiceImpl implements ProductService {
                 detail.setProduct(product);
             }
         }
-        // Use EntityManager to merge the Product entity
         entityManager.merge(product);
     }
 
@@ -90,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
