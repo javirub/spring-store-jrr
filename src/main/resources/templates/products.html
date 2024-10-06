@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{title}">Listado de productos</title> <!-- Usando i18n para el título -->
@@ -41,6 +41,8 @@
     <select id="categoryFilter">
         <option value="" th:text="#{filter_category}">Filtrar por categoría</option>
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+    </select>
+    <button id="resetFilter" type="button">Reestablecer Filtros</button>
     <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
     <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
 </div>
@@ -101,6 +103,14 @@
             if (category) {
                 window.location.href = '/products?category=' + category;
             }
+        });
+        // Reestablecer filtros
+        $("#resetFilter").on("click", function() {
+            $("#idFilter").val('');
+            $("#categoryFilter").val('');
+            $("#priceFilter").val('');
+            $("#stockFilter").val('');
+            $("#productTable tr").show();
         });
     });
 </script>

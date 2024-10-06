@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategory(Category category);
 
     @Query("SELECT p FROM Product p JOIN FETCH p.productDetail WHERE p.category = :category")
     List<Product> findByCategoryWithDetail(Category category);

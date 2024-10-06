@@ -28,7 +28,7 @@ public class ProductController {
     // Obtener todos los productos [READ]
     @GetMapping
     public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+        return productService.getAllProductsWithDetail();
     }
 
     // Actualizar un producto [UPDATE]

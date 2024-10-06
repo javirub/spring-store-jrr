@@ -3,16 +3,16 @@ package com.laberit.sina.bootcamp.modulo3.spring_web.controller.frontoffice;
 import com.laberit.sina.bootcamp.modulo3.spring_web.dto.ProductDTO;
 import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
-import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductServiceImpl;
+import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductService;
 import com.laberit.sina.bootcamp.modulo3.spring_web.utils.EnumUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,20 @@ import java.util.List;
 @RequestMapping("products")
 public class ProductFrontController {
     @Autowired
-    private ProductServiceImpl productServiceImpl;
+    private ProductService productService;
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
+        try {
+            Product product = productService.getProductById(id);
+            ProductDTO productDTO = new ProductDTO(product, lang); //
+            return new ResponseEntity<>(productDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("No se ha encontrado el producto con id: " + id, HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping
     public String showProducts(Model model, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "name", required = false) String name) {
@@ -55,15 +68,15 @@ public class ProductFrontController {
         if (category != null && EnumUtils.isValidCategory(category)) {
             Category categoryEnum = Category.valueOf(category.toUpperCase());
             if (name != null && !name.isEmpty()) {
-                products = productServiceImpl.getAllProductsByCategoryWithDetailFilterByName(categoryEnum, name, lang);
+                products = productService.getAllProductsByCategoryWithDetailFilterByName(categoryEnum, name, lang);
             } else {
-                products = productServiceImpl.getAllProductsByCategoryWithDetail(categoryEnum);
+                products = productService.getAllProductsByCategoryWithDetail(categoryEnum);
             }
         } else {
             if (name != null && !name.isEmpty()) {
-                products = productServiceImpl.getAllProductsWithDetailFilterByName(name, lang);
+                products = productService.getAllProductsWithDetailFilterByName(name, lang);
             } else {
-                products = productServiceImpl.getAllProductsWithDetail();
+                products = productService.getAllProductsWithDetail();
             }
         }
 
