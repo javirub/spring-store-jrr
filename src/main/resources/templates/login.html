@@ -85,6 +85,9 @@
         <button type="submit" class="btn" th:text="#{login}">Iniciar sesión</button>
     </form>
     <div th:if="${param.error}" class="error" th:text="#{login.error}">Email o contraseña incorrectos</div>
+    <div style="text-align: center; margin-top: 1rem;">
+        <a th:href="@{/register}" style="color: #6a11cb;">¿No tienes cuenta? Regístrate</a>
+    </div>
 </div>
 </body>
 </html>

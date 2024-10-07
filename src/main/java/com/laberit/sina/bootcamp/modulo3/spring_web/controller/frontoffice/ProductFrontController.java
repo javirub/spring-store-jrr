@@ -37,7 +37,9 @@ public class ProductFrontController {
     }
 
     @GetMapping
-    public String showProducts(Model model, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "name", required = false) String name) {
+    public String showProducts(Model model,
+                               @RequestParam(value = "category", required = false) String category,
+                               @RequestParam(value = "name", required = false) String name) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         // Añadir los productos al modelo
         model.addAttribute("products", getProductDTO(category, lang, name).stream()
