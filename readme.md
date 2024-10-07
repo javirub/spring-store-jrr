@@ -24,6 +24,9 @@ Cliente:
 #### Usando con postman
 Para usar el proyecto con postman, se debe importar la colección de postman que se encuentra en la carpeta postman de este proyecto.
 
+#### Usando desde el navegador
+Para usar el proyecto desde el navegador, se debe acceder a la url http://localhost:8080/ para ver el front. La idea es que el front muestre lo mismo que el back, pero con un diseño más amigable.
+
 ## Enunciado
 # 1.	Introducción
 Conforme vayas avanzando en la clase de Spring Web, irás implementando una aplicación de backend de una tienda online. Esta aplicación tendrá dos caras:  
