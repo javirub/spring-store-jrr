@@ -35,6 +35,9 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeProducts() {
+        if (productRepository.count() > 0) {
+            return;
+        }
         List<Product> products = List.of(
                 new Product("GPU001", 289.99, 10L, Category.GRAPHIC_CARD, List.of(
                         new ProductDetail("Tarjeta Gráfica MSI GeForce RTX 4060", "VENTUS 2X BLACK OC 8GB GDDR6 DLSS3", "es", null),
@@ -139,6 +142,9 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeUsers() {
+        if (userRepository.count() > 0) {
+            return;
+        }
         User adminUser = new User();
         adminUser.setName("Admin");
         adminUser.setEmail("admin@laberit.com");

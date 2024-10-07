@@ -10,15 +10,15 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail WHERE p.category = :category")
+    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail WHERE p.category = :category ORDER BY p.id")
     List<Product> findByCategoryWithDetail(Category category);
 
-    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail")
+    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail ORDER BY p.id")
     List<Product> findAllWithDetail();
 
-    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail d WHERE p.category = :category AND d.lang = :lang AND LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail d WHERE p.category = :category AND d.lang = :lang AND LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%')) ORDER BY p.id")
     List<Product> findByCategoryWithDetailFilterByName(@Param("category") Category category, @Param("name") String name, @Param("lang") String lang);
 
-    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail d WHERE d.lang = :lang AND LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    @Query("SELECT p FROM Product p JOIN FETCH p.productDetail d WHERE d.lang = :lang AND LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%')) ORDER BY p.id")
     List<Product> findAllWithDetailFilterByName(@Param("name") String name, @Param("lang") String lang);
 }

@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "54949a99-0ef0-475c-8873-23fe6046e151",
+		"name": "Proyecto tienda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33404736"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "Product by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/products/:id?lang={{lang}}",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"products",
+								":id"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "{{lang}}",
+									"description": "es"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "Application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base-url}}/products?lang=es",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "es",
+									"description": "\"es\" para español, \"en\" para ingles"
+								},
+								{
+									"key": "category",
+									"value": "graphic_Card",
+									"description": "Categories Accepted:[GRAPHIC_CARD, MOTHERBOARD, PROCESSOR, RAM, STORAGE, POWER_SUPPLY, CASE, COOLER, OTHER",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "msi",
+									"description": "Filter products containing name",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "backoffice",
+			"item": [
+				{
+					"name": "Add new Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"P006\",\r\n    \"price\": 60,\r\n    \"stock\": 30,\r\n    \"category\": \"OTHER\",\r\n    \"productDetail\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"Product\",\r\n            \"description\": \"Product description\",\r\n            \"lang\": \"en\"\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"name\": \"Producto\",\r\n            \"description\": \"Descripción del producto\",\r\n            \"lang\": \"es\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/{{back}}/product",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"{{back}}",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Products",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/{{back}}/product",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"{{back}}",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"code\": \"cambio\",\r\n        \"price\": 1512.29,\r\n        \"stock\": 30,\r\n        \"productDetail\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/{{back}}/product/:id",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"{{back}}",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3",
+									"description": "Id del producto a cambiar"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base-url}}/{{back}}/product/:id?confirmed=True",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"{{back}}",
+								"product",
+								":id"
+							],
+							"query": [
+								{
+									"key": "confirmed",
+									"value": "True"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "Name to register",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "",
+									"description": "Email to register",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Password to register",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base-url}}/register",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{user}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.sendRequest(\"http://localhost:8080/login\", function (err, res) {\r",
+					"    if (err) {\r",
+					"        console.log(err);\r",
+					"    } else {\r",
+					"        var csrfToken = res.headers.get('X-CSRF-TOKEN');\r",
+					"        pm.environment.set('csrfToken', csrfToken);\r",
+					"    }\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base-url",
+			"value": "localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "lang",
+			"value": "es",
+			"type": "string"
+		},
+		{
+			"key": "back",
+			"value": "backoffice"
+		}
+	]
+}

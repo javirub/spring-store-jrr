@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista de Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .product {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+        .product h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product p {
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="product">
+    <img src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg" alt="Imagen del Producto" />
+    <h1 th:text="${product.name}">Nombre del Producto</h1>
+    <p th:text="${product.description}">Descripción del Producto</p>
+    <p th:text="${product.price}+ ' €'" >Precio del Producto</p>
+    <p th:text="${product.category}">Categoría del Producto</p>
+</div>
+</body>
+</html>
