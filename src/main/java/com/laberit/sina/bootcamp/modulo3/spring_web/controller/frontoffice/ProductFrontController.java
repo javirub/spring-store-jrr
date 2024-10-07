@@ -23,7 +23,7 @@ public class ProductFrontController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json" )
     @ResponseBody
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -33,6 +33,19 @@ public class ProductFrontController {
             return new ResponseEntity<>(productDTO, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("No se ha encontrado el producto con id: " + id, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public String showProductById(Model model, @PathVariable Long id) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
+        try {
+            Product product = productService.getProductById(id);
+            ProductDTO productDTO = new ProductDTO(product, lang);
+            model.addAttribute("product", productDTO);
+            return "product"; // Nombre de la vista Thymeleaf
+        } catch (EntityNotFoundException e) {
+            return "error/404";
         }
     }
 
