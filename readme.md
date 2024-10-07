@@ -1,3 +1,30 @@
+# Ejercicio Spring Store
+## Documentación
+### Inicializar proyecto
+Para inicializar el proyecto, se debe ejecutar el comando ```docker-compose up```. 
+
+Esto descargara las imagenes de mysql y maven con jdk 21, montará la base de datos y ejecutará el proyecto vinculado a esta base de datos.
+
+También podemos iniciar unicamente la base de datos y ejecutar el proyecto de manera local, para ello se debe ejecutar el comando ```docker-compose up -d mysql```, y luego ejecutar el proyecto de manera nativa.
+
+La primera vez que iniciemos se crearán las tablas y se añadiran los productos y usuarios del DataInitializer, el datainitializer comprueba que no se haya inicializado ya la base de datos, si ya se ha inicializado no hará nada.
+
+#### Datos
+Usuarios precreados:
+Admin: 
+- email: admin@laberit.com
+- password: America@@2023
+- role: ADMIN
+
+Cliente:
+- email: client@laberit.com
+- password: America@@2023
+- role: CLIENT
+
+#### Usando con postman
+Para usar el proyecto con postman, se debe importar la colección de postman que se encuentra en la carpeta postman de este proyecto.
+
+## Enunciado
 # 1.	Introducción
 Conforme vayas avanzando en la clase de Spring Web, irás implementando una aplicación de backend de una tienda online. Esta aplicación tendrá dos caras:  
 * El backoffice. Servirá para gestionar la tienda:

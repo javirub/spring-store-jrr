@@ -56,9 +56,11 @@ public class SecurityConfig {
             @Override
             protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                     throws ServletException, IOException {
-                CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-                if (csrfToken != null) {
-                    response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+                if ("/login".equals(request.getRequestURI())) {
+                    CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+                    if (csrfToken != null) {
+                        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+                    }
                 }
                 filterChain.doFilter(request, response);
             }
