@@ -36,12 +36,31 @@
     </style>
 </head>
 <body>
+<a href="/products" style="display: inline-block; margin-top: 20px; padding: 8px 12px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Return to Products</a>
 <div class="product">
     <img src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg" alt="Imagen del Producto" />
     <h1 th:text="${product.name}">Nombre del Producto</h1>
     <p th:text="${product.description}">Descripción del Producto</p>
     <p th:text="${product.price}+ ' €'" >Precio del Producto</p>
     <p th:text="${product.category}">Categoría del Producto</p>
+    <label for="quantity">Cantidad:</label>
+    <input type="number" id="quantity" name="quantity" min="1" value="1" onchange="updatePrice()">
+    <p id="totalPrice" th:text="${product.price} + ' €'">Precio Total</p>
+    <form action="/order" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <input type="hidden" name="productId" th:value="${product.id}">
+        <input type="hidden" name="quantity" id="quantityInput" value="1">
+        <button type="submit">Comprar</button>
+    </form>
 </div>
+<script th:inline="javascript">
+    function updatePrice() {
+        var price = parseFloat(/*[[${product.price}]]*/);
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var totalPrice = price * quantity;
+        document.getElementById("totalPrice").innerText = totalPrice + ' €';
+        document.getElementById("quantityInput").value = quantity;
+    }
+</script>
 </body>
 </html>
