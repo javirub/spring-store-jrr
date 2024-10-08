@@ -14,7 +14,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY, optional = false) // un pedido para cada producto, puede cambiarse a OneToMany
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // varios pedidos pueden tener el mismo producto
     private Product product;
     @ManyToOne
     private User user;
