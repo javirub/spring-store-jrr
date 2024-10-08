@@ -20,4 +20,14 @@ public class Order {
     private User user;
     private Date date;
     private int quantity;
+
+    public Order() {
+    }
+
+    public Order(Product product, User user, Date date, int quantity) {
+        this.product = product;
+        this.user = user;
+        this.date = date;
+        this.quantity = quantity;
+    }
 }
