@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Compra Exitosa</title>
+    <style>
+        .success-message {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #dff0d8;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            color: #3c763d;
+        }
+    </style>
+</head>
+<body>
+<div class="success-message">
+    <h1>Compra Realizada con Éxito</h1>
+    <p>Has comprado el producto <span th:text="${productName}">Nombre del Producto</span> con una cantidad de <span th:text="${quantity}">1</span>.</p>
+    <p>Gracias por tu compra.</p>
+</div>
+</body>
+</html>

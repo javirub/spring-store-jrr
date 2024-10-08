@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Error en la Compra</title>
+    <style>
+        .error-message {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #f2dede;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+<div class="error-message">
+    <h1>Error en la Compra</h1>
+    <p th:text="${error}">Ha ocurrido un error al procesar tu compra. Por favor, intenta nuevamente.</p>
+</div>
+</body>
+</html>

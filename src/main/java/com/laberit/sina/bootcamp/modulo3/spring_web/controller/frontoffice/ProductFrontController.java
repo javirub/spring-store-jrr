@@ -55,9 +55,7 @@ public class ProductFrontController {
                                @RequestParam(value = "name", required = false) String name) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         // Añadir los productos al modelo
-        model.addAttribute("products", getProductDTO(category, lang, name).stream()
-                .filter(product -> name == null || product.getName().toLowerCase().contains(name.toLowerCase()))
-                .toList());
+        model.addAttribute("products", getProductDTO(category, lang, name).stream().toList());
         // Añadir categorías de productos
         model.addAttribute("categories", Arrays.asList(Category.values()));
         return "products"; // Nombre de la vista Thymeleaf
@@ -68,13 +66,7 @@ public class ProductFrontController {
     public List<ProductDTO> showProductsJson(@RequestParam(value = "category", required = false) String category,
                                              @RequestParam(value = "name", required = false) String name) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        List<ProductDTO> products = getProductDTO(category, lang, name);
-        if (name != null && !name.isEmpty()) {
-            products = products.stream()
-                    .filter(product -> product.getName().toLowerCase().contains(name.toLowerCase()))
-                    .toList();
-        }
-        return products;
+        return getProductDTO(category, lang, name);
     }
 
 
