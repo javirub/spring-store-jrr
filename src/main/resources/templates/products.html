@@ -64,9 +64,8 @@
         <option value="" th:text="#{filter_category}">Filtrar por categoría</option>
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     </select>
+    <input type="text" id="nameFilter" th:placeholder="#{filter_name}" placeholder="Filtrar por nombre">
     <button id="resetFilter" type="button">Reestablecer Filtros</button>
-    <input type="number" id="priceFilter" th:placeholder="#{filter_price}" placeholder="Filtrar por precio (Min)">
-    <input type="number" id="stockFilter" th:placeholder="#{filter_stock}" placeholder="Filtrar por stock (Min)">
 </div>
 
 <div class="product-grid">
@@ -81,22 +80,6 @@
 
 <script>
     $(document).ready(function () {
-        // Filtros por código, precio y stock
-        $("#priceFilter, #stockFilter").on("input", function () {
-            var priceFilter = parseFloat($("#priceFilter").val()) || 0;
-            var stockFilter = parseInt($("#stockFilter").val()) || 0;
-
-            $("#productTable tr").filter(function () {
-                var price = parseFloat($(this).find("td:nth-child(3)").text());
-                var stock = parseInt($(this).find("td:nth-child(4)").text());
-
-                $(this).toggle(
-                    (price >= priceFilter) &&
-                    (stock >= stockFilter)
-                );
-            });
-        });
-
         // Redirigir al enlace /products/{id} al presionar Enter en el filtro por ID
         $("#idFilter").on("keypress", function (event) {
             if (event.which === 13) { // Enter key pressed
@@ -107,12 +90,28 @@
             }
         });
 
-        $("#categoryFilter").on("change", function () {
-            var category = $(this).val();
-            if (category) {
-                window.location.href = '/products?category=' + category;
+        // Redirigir al enlace /products/{id} al presionar Enter en el filtro por ID
+        $("#nameFilter").on("keypress", function (event) {
+            if (event.which === 13) { // Enter key pressed
+                var name = $(this).val();
+                var url = new URL(window.location.href);
+                if (name) {
+                    url.searchParams.set('name', name);
+                    window.location.href = url.toString();
+                }
             }
         });
+
+        // Redirigir al enlace /products?category={category} al cambiar la categoría
+        $("#categoryFilter").on("change", function () {
+            var category = $(this).val();
+            var url = new URL(window.location.href);
+            if (category) {
+                url.searchParams.set('category', category);
+                window.location.href = url.toString();
+            }
+        });
+
         // Reestablecer filtros
         $("#resetFilter").on("click", function () {
             window.location.href = '/products';
