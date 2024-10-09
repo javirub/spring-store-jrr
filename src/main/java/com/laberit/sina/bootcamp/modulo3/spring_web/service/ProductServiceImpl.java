@@ -1,9 +1,11 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.service;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.dto.ProductDTO;
 import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.ProductDetail;
 import com.laberit.sina.bootcamp.modulo3.spring_web.repository.ProductRepository;
+import com.laberit.sina.bootcamp.modulo3.spring_web.utils.EnumUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -100,5 +102,25 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<ProductDTO> getProductDTO(String category, String lang, String name, Pageable pageable) {
+        Page<Product> products;
+        if (category != null && EnumUtils.isValidCategory(category)) {
+            Category categoryEnum = Category.valueOf(category.toUpperCase());
+            if (name != null && !name.isEmpty()) {
+                products = getAllProductsByCategoryFilterByName(categoryEnum, name, lang, pageable);
+            } else {
+                products = getAllProductsByCategory(categoryEnum, pageable);
+            }
+        } else {
+            if (name != null && !name.isEmpty()) {
+                products = getAllProductsFilterByName(name, lang, pageable);
+            } else {
+                products = getAllProducts(pageable);
+            }
+        }
+        return products.map(product -> new ProductDTO(product, lang));
     }
 }

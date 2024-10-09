@@ -1,5 +1,6 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.service;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.dto.ProductDTO;
 import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,6 @@ public interface ProductService {
     Page<Product> getAllProductsFilterByName(String name, String lang, Pageable pageable);
 
     Page<Product> getAllProductsByCategoryFilterByName(Category category, String name, String lang, Pageable pageable);
+
+    Page<ProductDTO> getProductDTO(String category, String lang, String name, Pageable pageable);
 }
