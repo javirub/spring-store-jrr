@@ -10,9 +10,9 @@ import lombok.Setter;
 @Table(name = "product_statistic")
 public class ProductStatistic {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long count;
     @OneToOne
+    @MapsId
     private Product product;
 }
