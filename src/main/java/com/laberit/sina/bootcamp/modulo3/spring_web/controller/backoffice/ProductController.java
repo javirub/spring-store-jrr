@@ -4,11 +4,11 @@ import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
 import com.laberit.sina.bootcamp.modulo3.spring_web.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -27,8 +27,8 @@ public class ProductController {
 
     // Obtener todos los productos [READ]
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProductsWithDetail();
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productService.getAllProducts(pageable);
     }
 
     // Actualizar un producto [UPDATE]
