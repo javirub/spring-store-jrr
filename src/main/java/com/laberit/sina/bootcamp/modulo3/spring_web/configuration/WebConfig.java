@@ -1,5 +1,8 @@
 package com.laberit.sina.bootcamp.modulo3.spring_web.configuration;
 
+import com.laberit.sina.bootcamp.modulo3.spring_web.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -15,6 +18,9 @@ import java.util.Locale;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private Filter filter;
 
     // Configuración para internacionalización (i18n)
     @Bean
@@ -56,5 +62,13 @@ public class WebConfig implements WebMvcConfigurer {
         messageSource.setBasename("lang/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> loggingFilter(){
+        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(filter);
+        registrationBean.addUrlPatterns("/products*");
+        return registrationBean;
     }
 }
