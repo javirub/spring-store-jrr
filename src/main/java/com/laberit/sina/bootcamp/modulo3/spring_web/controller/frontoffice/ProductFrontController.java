@@ -8,6 +8,10 @@ import com.laberit.sina.bootcamp.modulo3.spring_web.utils.EnumUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,7 +27,7 @@ public class ProductFrontController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping(value = "/{id}", produces = "application/json" )
+    @GetMapping(value = "/{id}", produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -52,43 +56,49 @@ public class ProductFrontController {
     @GetMapping
     public String showProducts(Model model,
                                @RequestParam(value = "category", required = false) String category,
-                               @RequestParam(value = "name", required = false) String name) {
+                               @RequestParam(value = "name", required = false) String name,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "20") int size) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        // Añadir los productos al modelo
-        model.addAttribute("products", getProductDTO(category, lang, name).stream().toList());
-        // Añadir categorías de productos
+        Page<ProductDTO> productPage = getProductDTO(category, lang, name, PageRequest.of(page, size));
+        model.addAttribute("products", productPage.getContent());
         model.addAttribute("categories", Arrays.asList(Category.values()));
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         return "products"; // Nombre de la vista Thymeleaf
     }
 
     @GetMapping(produces = "application/json")
     @ResponseBody
-    public List<ProductDTO> showProductsJson(@RequestParam(value = "category", required = false) String category,
-                                             @RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<List<ProductDTO>> showProductsJson(@RequestParam(value = "category", required = false) String category,
+                                                             @RequestParam(value = "name", required = false) String name,
+                                                             @RequestParam(value = "page", defaultValue = "0") int page,
+                                                             @RequestParam(value = "size", defaultValue = "20") int size) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return getProductDTO(category, lang, name);
+        Page<ProductDTO> productPage = getProductDTO(category, lang, name, PageRequest.of(page, size));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-TOTAL-COUNT", String.valueOf(productPage.getTotalElements()));
+        return new ResponseEntity<>(productPage.getContent(), headers, HttpStatus.OK);
     }
 
 
-    private List<ProductDTO> getProductDTO(String category, String lang, String name) {
-        List<Product> products;
+    private Page<ProductDTO> getProductDTO(String category, String lang, String name, Pageable pageable) {
+        Page<Product> products;
         if (category != null && EnumUtils.isValidCategory(category)) {
             Category categoryEnum = Category.valueOf(category.toUpperCase());
             if (name != null && !name.isEmpty()) {
-                products = productService.getAllProductsByCategoryWithDetailFilterByName(categoryEnum, name, lang);
+                products = productService.getAllProductsByCategoryFilterByName(categoryEnum, name, lang, pageable);
             } else {
-                products = productService.getAllProductsByCategoryWithDetail(categoryEnum);
+                products = productService.getAllProductsByCategory(categoryEnum, pageable);
             }
         } else {
             if (name != null && !name.isEmpty()) {
-                products = productService.getAllProductsWithDetailFilterByName(name, lang);
+                products = productService.getAllProductsFilterByName(name, lang, pageable);
             } else {
-                products = productService.getAllProductsWithDetail();
+                products = productService.getAllProducts(pageable);
             }
         }
 
-        return products.stream()
-                .map(product -> new ProductDTO(product, lang))
-                .toList();
+        return products.map(product -> new ProductDTO(product, lang));
     }
 }

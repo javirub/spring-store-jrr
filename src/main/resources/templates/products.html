@@ -52,6 +52,29 @@
         .product-item a:hover {
             background-color: #0056b3;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination .current {
+            background-color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +99,16 @@
         <p th:text="${product.category}">Categoría del Producto</p>
         <a th:href="@{'/products/' + ${product.id}}">Ver detalles</a>
     </div>
+</div>
+
+<!-- Controles de Paginación -->
+<div class="pagination">
+    <a th:if="${currentPage > 0}" th:href="@{${pageUrl}(page=${currentPage - 1})}">&laquo; Anterior</a>
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:if="${i != currentPage}" th:href="@{${pageUrl}(page=${i})}" th:text="${i + 1}"></a>
+        <span th:if="${i == currentPage}" th:text="${i + 1}" class="current"></span>
+    </span>
+    <a th:if="${currentPage < totalPages - 1}" th:href="@{${pageUrl}(page=${currentPage + 1})}">Siguiente &raquo;</a>
 </div>
 
 <script>

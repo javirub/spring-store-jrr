@@ -8,9 +8,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -23,23 +26,37 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> getAllProductsWithDetail() {
-        return productRepository.findAllWithDetail();
+    public Page<Product> getAllProducts(Pageable pageable) {
+        Page<Product> products = productRepository.findAll(pageable);
+        fetchProductDetails(products.getContent());
+        return products;
     }
 
     @Override
-    public List<Product> getAllProductsByCategoryWithDetailFilterByName(Category category, String name, String lang) {
-        return productRepository.findByCategoryWithDetailFilterByName(category, name, lang);
+    public Page<Product> getAllProductsByCategory(Category category, Pageable pageable) {
+        Page<Product> products = productRepository.findByCategory(category, pageable);
+        fetchProductDetails(products.getContent());
+        return products;
     }
 
     @Override
-    public List<Product> getAllProductsWithDetailFilterByName(String name, String lang) {
-        return productRepository.findAllWithDetailFilterByName(name, lang);
+    public Page<Product> getAllProductsFilterByName(String name, String lang, Pageable pageable) {
+        Page<Product> products = productRepository.findAllFilterByName(name, lang, pageable);
+        fetchProductDetails(products.getContent());
+        return products;
     }
 
     @Override
-    public List<Product> getAllProductsByCategoryWithDetail(Category category) {
-        return productRepository.findByCategoryWithDetail(category);
+    public Page<Product> getAllProductsByCategoryFilterByName(Category category, String name, String lang, Pageable pageable) {
+        Page<Product> products = productRepository.findByCategoryFilterByName(category, name, lang, pageable);
+        fetchProductDetails(products.getContent());
+        return products;
+    }
+
+    public void fetchProductDetails(List<Product> products) {
+        List<Long> productIds = products.stream().map(Product::getId).collect(Collectors.toList());
+        List<Product> productsWithDetails = productRepository.findAllById(productIds);
+        productsWithDetails.forEach(product -> product.getProductDetail().size()); // Trigger lazy loading by accessing the size
     }
 
     @Override
