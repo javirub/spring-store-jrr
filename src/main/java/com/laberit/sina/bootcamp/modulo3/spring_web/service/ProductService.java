@@ -2,8 +2,8 @@ package com.laberit.sina.bootcamp.modulo3.spring_web.service;
 
 import com.laberit.sina.bootcamp.modulo3.spring_web.enumeration.Category;
 import com.laberit.sina.bootcamp.modulo3.spring_web.model.Product;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
     Product getProductById(Long id);
@@ -14,11 +14,11 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
-    List<Product> getAllProductsWithDetail();
+    Page<Product> getAllProducts(Pageable pageable);
 
-    List<Product> getAllProductsByCategoryWithDetail(Category category);
+    Page<Product> getAllProductsByCategory(Category category, Pageable pageable);
 
-    List<Product> getAllProductsWithDetailFilterByName(String name, String lang);
+    Page<Product> getAllProductsFilterByName(String name, String lang, Pageable pageable);
 
-    List<Product> getAllProductsByCategoryWithDetailFilterByName(Category category, String name, String lang);
+    Page<Product> getAllProductsByCategoryFilterByName(Category category, String name, String lang, Pageable pageable);
 }
