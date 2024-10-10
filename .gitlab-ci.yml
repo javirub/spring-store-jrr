@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  MYSQL_DATABASE: my-database
+  MYSQL_USER: user
+  MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: password
+
+build:
+  stage: build
+  image: maven:3.9.9-eclipse-temurin-21-alpine
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker-compose down
+    - docker-compose up -d
