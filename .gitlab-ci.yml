@@ -16,6 +16,8 @@ build:
   artifacts:
     paths:
       - target/*.jar
+  tags:
+    - bootcamp
 
 deploy:
   stage: deploy
@@ -25,3 +27,5 @@ deploy:
   script:
     - docker-compose down
     - docker-compose up -d
+  tags:
+    - bootcamp
